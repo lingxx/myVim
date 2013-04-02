@@ -63,12 +63,15 @@
       }
 
       .backToTop {
-        display: none;
-        width: 18px;
-        line-height: 1.2;
-        padding: 5px 0;
-        background-color: #FF6A6A;
-        color: #FFF0F5;
+        display: block;
+        width: 17px;
+        line-height: 16px;
+        padding: 12px 5px;
+        background: none repeat scroll 0% 0% rgb(243, 243, 243);
+        color: rgb(51, 153, 224);
+        border: 1px solid rgb(228, 228, 228);
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px; 
         font-size: 12px;
         text-align: center;
         position: fixed;
@@ -120,6 +123,13 @@
             </div>
         </div>
 
+        <!-- UY BEGIN -->
+        <div class="container">
+          <div id="uyan_frame"></div>
+          <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1760270" async=""></script>
+        </div>
+        <!-- UY END -->
+
         <div id="footer">
             <div class="container">
                 <p class="muted credit">Copyright by
@@ -143,12 +153,22 @@
 
     <script type="text/javascript">
 
+        function mouseOver(o)
+        {
+          o.style.background = "#DBDBDB"
+        }
+
+        function mouseOut(o)
+        {
+          o.style.background = "#F3F3F3"
+        }
+
         $(document).ready(function() {
           
           $("pre").addClass("brush: cpp");
           
           (function() {
-            var $backToTopTxt = "返回顶部", $backToTopEle = $('<div class="backToTop"></div>').appendTo($("body"))
+            var $backToTopTxt = "返回顶部", $backToTopEle = $('<div class="backToTop" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"></div>').appendTo($("body"))
             .text($backToTopTxt).attr("title", $backToTopTxt).click(function() {
             $("html, body").animate({ scrollTop: 0 }, 120);
           }), $backToTopFun = function() {
