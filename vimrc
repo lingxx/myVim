@@ -136,6 +136,7 @@ syntax on
 try
     "colorscheme desert
     colorscheme peaksea
+    "colorscheme solarized
     "colorscheme solarized 
     "colorscheme ir_black
     "colorscheme mayansmoke
@@ -453,13 +454,35 @@ inoremap <F2> <C-R>=strftime("====== Last edited: %Y/%m/%d %X ======")<CR>
 
 let g:indent_guides_guide_size = 1
 
-map ,ch : call SetColorColumn()<CR>
-function! SetColorColumn()
-    let col_num = virtcol(".")
-    let cc_list = split(&cc, ',')
-    if count(cc_list, string(col_num)) <= 0
-        execute "set cc+=".col_num
-    else
-        execute "set cc-=".col_num
-    endif
+" Window/buffer management courtesy of dwm
+" Override basic behavior
+let g:dwm_map_keys = 0
+
+" Cleans up the Windown Layout if dwm buffer is closed 
+function! DWM_Fix()
+    let w = 1
+    " stack all windows
+    while(w <= winnr("$"))
+        exe w."wincmd w"
+        wincmd K
+        let w+=1
+    endwhile
+    " make the last current window the main window
+    wincmd H
+    " resize according to user preference
+    call DWM_ResizeMasterPaneWidth()
 endfunction
+
+" Split the current buffer
+function! DWM_Split()
+    " Move current master pane to the stack
+    call DWM_Stack(1)
+    " Create a vertical split
+    vert topleft split
+    call DWM_ResizeMasterPaneWidth()
+endfunction
+
+map <silent> <Leader>wf :call DWM_Fix()<CR>
+map <silent> <Leader>wo :call DWM_New()<CR>
+map <silent> <Leader>s :call DWM_Split()<CR>
+map <silent> <Leader>wq :call DWM_Close()<CR>
