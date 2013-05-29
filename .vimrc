@@ -136,6 +136,8 @@ syntax on
 try
     "colorscheme desert
     colorscheme peaksea
+    "colorscheme github
+    "colorscheme solarized
     "colorscheme solarized 
     "colorscheme ir_black
     "colorscheme mayansmoke
@@ -158,7 +160,6 @@ set encoding=utf8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -450,4 +451,39 @@ let g:vimwiki_valid_html_tags='b,i,s,u,sub,sup,kbd,br,hr,div,del,code,img,copy'
 
 nnoremap <F2> "=strftime("====== Last edited: %Y/%m/%d %X ======")<CR>gP
 inoremap <F2> <C-R>=strftime("====== Last edited: %Y/%m/%d %X ======")<CR>
+
+let g:indent_guides_guide_size = 1
+
+" Window/buffer management courtesy of dwm
+" Override basic behavior
+let g:dwm_map_keys = 0
+
+" Cleans up the Windown Layout if dwm buffer is closed 
+function! DWM_Fix()
+    let w = 1
+    " stack all windows
+    while(w <= winnr("$"))
+        exe w."wincmd w"
+        wincmd K
+        let w+=1
+    endwhile
+    " make the last current window the main window
+    wincmd H
+    " resize according to user preference
+    call DWM_ResizeMasterPaneWidth()
+endfunction
+
+" Split the current buffer
+function! DWM_Split()
+    " Move current master pane to the stack
+    call DWM_Stack(1)
+    " Create a vertical split
+    vert topleft split
+    call DWM_ResizeMasterPaneWidth()
+endfunction
+
+map <silent> <Leader>wf :call DWM_Fix()<CR>
+map <silent> <Leader>wo :call DWM_New()<CR>
+map <silent> <Leader>s :call DWM_Split()<CR>
+map <silent> <Leader>wq :call DWM_Close()<CR>
 
